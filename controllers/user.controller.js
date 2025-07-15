@@ -2,6 +2,7 @@
     import bcrypt from "bcrypt"
     import { customResponse } from "../utils/customresponse.js";
     import { EMAIL_PATTERN, PASSWORD_PATTERN } from "../utils/pattern.js";
+    import generateToken from "../utils/generateToken.js";
     const signUp = async (req, res)=>{
         try{
             const{name, email, password} = req.body;
@@ -24,11 +25,13 @@
             const hashedPassword = await bcrypt.hash(password, 12)
             
             const user = await User.create({name, email, password : hashedPassword})  
+            const token = generateToken(user._id)
 
             return customResponse(res, 201, "user created successfully",null, true, {
                 id : user._id,
                 name : user.name,
-                email : user.email
+                email : user.email,
+                token : token
             })
 
 
@@ -59,12 +62,13 @@
             if(!checkPassword){
                 return customResponse(res, 400, "Enter a valid password", null, false)
             }
-
+            const token = generateToken(user._id)
 
             return customResponse(res, 200, "user login successfully", null, true, {
                 id : user._id,
                 email : user.email,
-                name : user.name
+                name : user.name,
+                token : token
             })
 
 

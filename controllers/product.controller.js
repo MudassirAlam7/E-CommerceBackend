@@ -4,11 +4,7 @@ import { customResponse } from "../utils/customresponse.js";
 const allProduct = async (req, res)=>{
     try{
     const products = await Product.find()
-    return customResponse(res, 200, "fetched all the product", null, true, {
-        id : products._id,
-        title : products.title,
-        descripition : products.descripition
-    })
+    return customResponse(res, 200, "fetched all the product", null, true, products)
     }
     catch(error){
         return customResponse(res, 500, "server error", error.message, false)
