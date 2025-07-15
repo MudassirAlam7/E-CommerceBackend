@@ -2,6 +2,9 @@ import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./db/database.js"
 import AuthRouter from "./routes/Auth.router.js"
+import productRouter from "./routes/product.router.js"
+import cartRouter from "./routes/cart.router.js"
+import contactRouter from "./routes/contact.router.js"
 
 dotenv.config()
 
@@ -10,7 +13,13 @@ const app = express()
 app.use(express.json())
 
 app.use("/api/auth", AuthRouter)
+app.use("/api/products", productRouter )
+app.use("/api/cart", cartRouter)
+app.use("/api/contact", contactRouter)
 
+app.get("/", (req, res)=>{
+    res.send("Hello world")
+})
 connectDB()
 const PORT = process.env.PORT || 5000
 
