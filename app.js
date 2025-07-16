@@ -6,12 +6,15 @@ import productRouter from "./routes/product.router.js"
 import cartRouter from "./routes/cart.router.js"
 import contactRouter from "./routes/contact.router.js"
 import protect from "./middleware/auth.middleware.js"
+import cloudinaryConnection from "./db/cloudinary.js"
+cloudinaryConnection()
 
 dotenv.config()
 
 
 const app = express()
 app.use(express.json())
+app.use(express.urlencoded({extended : true}))
 
 app.use("/api/auth", AuthRouter)
 app.use("/api/products", protect, productRouter )

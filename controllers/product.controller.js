@@ -1,6 +1,30 @@
 import Product from "../models/product.models.js";
 import { customResponse } from "../utils/customresponse.js";
 
+const addToProduct = async (req, res)=>{
+    try {
+        const {productName, price,category, subcategory,description, stock} = req.body
+
+        if(!req.file){
+            return customResponse(res, 400, "image is required", "file missing", false)
+        }
+        const imageUrl = req.file.path;
+        const newProduct = await Product.create({
+            productName,
+            price, 
+            category,
+            subcategory, 
+            image : imageUrl,
+            description, 
+            stock
+        })
+        return customResponse(res, 201, "product added successfully", null, true, newProduct)
+    } catch (error) {
+        return customResponse(res, 500, "server error", error.message, false)
+    }
+
+}
+
 const allProduct = async (req, res)=>{
     try{
     const products = await Product.find()
@@ -24,4 +48,4 @@ const categoryProduct = async (req, res)=>{
         return customResponse(res, 500, "server error", null, false, null)
     }
 }
-export {allProduct, categoryProduct}
+export { addToProduct, allProduct, categoryProduct}
