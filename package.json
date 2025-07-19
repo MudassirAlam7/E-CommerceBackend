@@ -1,10 +1,10 @@
 {
   "name": "e-commerce",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api/app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon api/app.js"
   },
   "keywords": [],
   "author": "",
