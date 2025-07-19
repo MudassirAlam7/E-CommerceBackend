@@ -1,36 +1,41 @@
-import express from "express"
-import dotenv from "dotenv"
-import connectDB from "./db/database.js"
-import AuthRouter from "./routes/Auth.router.js"
-import productRouter from "./routes/product.router.js"
-import cartRouter from "./routes/cart.router.js"
-import contactRouter from "./routes/contact.router.js"
-import protect from "./middleware/auth.middleware.js"
-import cors from "cors"
-import cloudinaryConnection from "./db/cloudinary.js"
-cloudinaryConnection()
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import serverless from "serverless-http";
 
-dotenv.config()
+import connectDB from "./db/database.js";
+import cloudinaryConnection from "./db/cloudinary.js";
 
+// Load environment variables
+dotenv.config();
 
-const app = express()
-app.use(express.json())
-app.use(cors())
-app.use(express.urlencoded({extended : true}))
+// Initialize DB and cloudinary connections
+connectDB();
+cloudinaryConnection();
 
-app.use("/api/auth", AuthRouter)
-app.use("/api/products", productRouter )
-app.use("/api/cart", cartRouter)
-app.use("/api/contact", contactRouter)
+// Initialize Express app
+const app = express();
 
-app.get("/", (req, res)=>{
-    res.send("Hello world")
-})
-connectDB()
-const PORT = process.env.PORT || 5000
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(PORT, ()=>{
-    console.log(`server is running on port ${PORT}`);
-    
-})
+// Routers
+import AuthRouter from "./routes/Auth.router.js";
+import productRouter from "./routes/product.router.js";
+import cartRouter from "./routes/cart.router.js";
+import contactRouter from "./routes/contact.router.js";
+
+app.use("/api/auth", AuthRouter);
+app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/contact", contactRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hello world from Vercel Serverless!");
+});
+
+// ❌ Remove app.listen()
+// ✅ Export as serverless function
 export const handler = serverless(app);
