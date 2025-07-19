@@ -1,15 +1,14 @@
 
 import express from "express"
 import dotenv from "dotenv"
-import connectDB from "../db/database.js"
-import ServerlessHttp from "serverless-http" 
-import AuthRouter from "../routes/Auth.router.js"
-import productRouter from "../routes/product.router.js"
-import cartRouter from "../routes/cart.router.js"
-import contactRouter from "../routes/contact.router.js"
-import protect from "../middleware/auth.middleware.js"
+import connectDB from "./db/database.js"
+import AuthRouter from "./routes/Auth.router.js"
+import productRouter from "./routes/product.router.js"
+import cartRouter from "./routes/cart.router.js"
+import contactRouter from "./routes/contact.router.js"
+import protect from "./middleware/auth.middleware.js"
 import cors from "cors"
-import cloudinaryConnection from "../db/cloudinary.js"
+import cloudinaryConnection from "./db/cloudinary.js"
 cloudinaryConnection()
 
 dotenv.config()
@@ -35,7 +34,6 @@ app.get("/", (req, res)=>{
 connectDB()
 const PORT = process.env.PORT || 5000
 
-// app.listen(PORT, ()=>{
-//     console.log(`server is running on port ${PORT}`);
-// })
-export default ServerlessHttp(app)
+app.listen(PORT, ()=>{
+    console.log(`server is running on port ${PORT}`);
+})
