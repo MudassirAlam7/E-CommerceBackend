@@ -1,6 +1,8 @@
+
 import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./db/database.js"
+import serverless from "serverless-http"; 
 import AuthRouter from "./routes/Auth.router.js"
 import productRouter from "./routes/product.router.js"
 import cartRouter from "./routes/cart.router.js"
