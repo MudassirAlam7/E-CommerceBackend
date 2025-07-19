@@ -35,4 +35,4 @@ const PORT = process.env.PORT || 5000
 //     console.log(`server is running on port ${PORT}`);
     
 // })
-export const handler = serverless(app);
+export default serverless(app)
