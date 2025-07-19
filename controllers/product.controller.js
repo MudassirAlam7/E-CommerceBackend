@@ -5,6 +5,9 @@ const addToProduct = async (req, res) => {
   try {
     const { productName, price, category, subcategory, description, stock } =
       req.body;
+      if (!productName.trim() || !price || !category.trim() || !subcategory.trim() || !description.trim() || !stock) {
+        return customResponse(res, 400, "Please enter all the fields", "missing Input", false);
+    } 
 
     if (!req.file) {
       return customResponse(
@@ -15,6 +18,8 @@ const addToProduct = async (req, res) => {
         false
       );
     }
+    console.log(req.file);
+    
     const imageUrl = req.file.path;
     const newProduct = await Product.create({
       productName,

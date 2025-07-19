@@ -6,6 +6,6 @@ const productRouter = express.Router()
 
 productRouter.get("/", allProduct)
 productRouter.get("/category", categoryProduct)
-productRouter.post("/uploads", upload.single("image"), addToProduct )
+productRouter.post("/uploads", upload.single("file"), addToProduct )
 productRouter.delete("/:productId", deleteProduct)
 export default productRouter

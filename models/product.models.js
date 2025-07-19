@@ -15,13 +15,11 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    subcategory: [
-      {
-        type: String,
+    subcategory: {
+      type: String,
 
-        required: true,
-      },
-    ],
+      required: true,
+    },
 
     image: {
       type: String,
