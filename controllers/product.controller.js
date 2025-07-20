@@ -3,43 +3,49 @@ import { customResponse } from "../utils/customresponse.js";
 
 const addToProduct = async (req, res) => {
   try {
-    const { productName, price, category, subcategory, description, stock } =
-      req.body;
-      if (!productName.trim() || !price || !category.trim() || !subcategory.trim() || !description.trim() || !stock) {
-        return customResponse(res, 400, "Please enter all the fields", "missing Input", false);
-    } 
+    const { productName, price, category, subcategory, description, stock } = req.body;
 
-    if (!req.file) {
-      return customResponse(
-        res,
-        400,
-        "image is required",
-        "file missing",
-        false
-      );
+    // Validate input fields
+    if (
+      !productName?.trim() || 
+      !price || 
+      !category?.trim() || 
+      !subcategory?.trim() || 
+      !description?.trim() || 
+      !stock
+    ) {
+      return customResponse(res, 400, "Please enter all the fields", "missing Input", false);
     }
-    console.log(req.file);
-    
-    const imageUrl = req.file.path;
+
+    // Validate uploaded files
+    if (!req.files || req.files.length === 0) {
+      return customResponse(res, 400, "At least one image is required", "files missing", false);
+    }
+
+    // Extract image URLs from Cloudinary (req.files)
+    const imageUrls = req.files.map(file => file.path);
+
+    // Save product with multiple image URLs
     const newProduct = await Product.create({
       productName,
       price,
       category,
       subcategory,
-      image: imageUrl,
+      image: imageUrls, // make sure this matches your schema
       description,
       stock,
     });
+
     return customResponse(
       res,
       201,
-      "product added successfully",
+      "Product added successfully",
       null,
       true,
       newProduct
     );
   } catch (error) {
-    return customResponse(res, 500, "server error", error.message, false);
+    return customResponse(res, 500, "Server error", error.message, false);
   }
 };
 
